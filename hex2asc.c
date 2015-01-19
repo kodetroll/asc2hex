@@ -1,6 +1,11 @@
 // hex2asc - A program that takes a string in the form of '4142434445' (hex)
 // and converts it to the binary represented by the hex digits. e.g.
 // 'abcde'.
+//
+// (C) 2015 KB4OID Labs, A division of Kodetroll Heavy Industries
+// Author: Kodetroll
+// Date: January 2015
+//
 
 #include <stdio.h>
 #include <stdlib.h>

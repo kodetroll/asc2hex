@@ -1,5 +1,10 @@
 // asc2hex - A program that takes a string of the form 'ABCDE' and converts
 // it to the form of '4142434445' (hex)
+//
+// (C) 2015 KB4OID Labs, A division of Kodetroll Heavy Industries
+// Author: Kodetroll
+// Date: January 2015
+//
 
 #include <stdio.h>
 #include <stdlib.h>
