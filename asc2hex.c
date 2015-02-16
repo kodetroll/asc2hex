@@ -47,6 +47,9 @@ char inbuf[120];
 char outbuf[120];
 
 //=== Global Prototypes =====================================================================================
+void HexDataDump(int DataLen, unsigned char * Data);
+void usage(char * name);
+int asc2hex(char * ibuf, char * obuf);
 
 
 /*
@@ -112,6 +115,23 @@ void usage(char * name)
 	printf("    Note: If no hexstring is provided on the command line, the user is prompted to enter it.");
 	printf("\n");
 	exit(0);
+}
+
+int asc2hex(char * ibuf, char * obuf)
+{
+	int i,j;
+	char tmp[4];
+
+	memset(obuf,0x00,sizeof(obuf));
+	i = 0;
+	j = 0;
+	do
+	{
+		sprintf(tmp,"%02x",ibuf[i++]);
+		strncat(obuf,tmp,strlen(tmp));
+	} while (i<strlen(ibuf));
+
+	return(i);
 }
 
 int main(int argc, char * argv[])
@@ -241,14 +261,7 @@ int main(int argc, char * argv[])
 
 	}
 
-	memset(outbuf,0x00,sizeof(outbuf));
-	i = 0;
-	j = 0;
-	do
-	{
-		sprintf(tmp,"%02x",inbuf[i++]);
-		strncat(outbuf,tmp,strlen(tmp));
-	} while (i<strlen(inbuf));
+	asc2hex(inbuf,outbuf);
 
 	// if hexdump is selected then the binary is output in
 	// hexdump form, else it is copied to output

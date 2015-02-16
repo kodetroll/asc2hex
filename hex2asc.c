@@ -52,6 +52,7 @@ char outbuf[120];
 int hex2int(char c);
 void HexDataDump(int DataLen, unsigned char * Data);
 void usage(char * name);
+int hex2asc(char * ibuf, char * obuf);
 
 //=== Start of Utility functions ============================================================================
 
@@ -300,6 +301,25 @@ void usage(char * name)
 	exit(0);
 }
 
+int hex2asc(char * ibuf, char * obuf)
+{
+	int i,j;
+	char c;
+
+	// Convert string from Hex ASCII chars to binary form
+	memset(obuf,0x00,sizeof(obuf));
+	i = 0;
+	j = 0;
+	do
+	{
+		c = hex2int(ibuf[i++]) * 16;
+		c += hex2int(ibuf[i++]);
+		obuf[j++] = c;
+	} while(i < strlen(ibuf));
+
+	return(j);
+}
+
 int main(int argc, char * argv[])
 {
 	FILE * fp;
@@ -433,15 +453,7 @@ int main(int argc, char * argv[])
 	strcpy(inbuf,strrep(buf, "\n", ""));
 
 	// Convert string from Hex ASCII chars to binary form
-	memset(outbuf,0x00,sizeof(outbuf));
-	i = 0;
-	j = 0;
-	do
-	{
-		c = hex2int(inbuf[i++]) * 16;
-		c += hex2int(inbuf[i++]);
-		outbuf[j++] = c;
-	} while(i < strlen(inbuf));
+	j = hex2asc(inbuf, outbuf);
 
 	// if hexdump is selected then the binary is output in
 	// hexdump form, else it is copied to output
