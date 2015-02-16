@@ -153,6 +153,11 @@ strrep(const char *s1, const char *s2, const char *s3)
 	assert(strlen(newstr) == newstr_len);
 	return newstr;
 }
+
+/* Converts a single char representing a hex number '0-9,A-F,a-f'
+ * to it's numeric integer value. e.g. '1' (0x31) becomes 1
+ *
+ */
 int hex2int(char c)
 {
 	switch(c)
@@ -274,6 +279,9 @@ void HexDataDump(int DataLen, unsigned char * Data)
 
 }
 
+/* Provides usage help for the help command
+ *
+ */
 void usage(char * name)
 {
 	printf("Usage: '%s' <options> <HEXSTRING>\n",name);
@@ -303,7 +311,6 @@ int main(int argc, char * argv[])
 
 	while (1)
     {
-
 		// parse args
 		static struct option long_options[] =
 		{
