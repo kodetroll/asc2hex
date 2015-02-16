@@ -1,4 +1,4 @@
-Utilities for converting strings from hex to binary and back.
+  Utilities for converting strings from hex to binary and back.
 
 hex2asc - Converts a string of the format hex chars '414243' to ASCII 'ABC'
 asc2hex - Converts an ASCII string of the format 'ABC' to hex chars '414243'
