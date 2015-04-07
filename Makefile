@@ -1,6 +1,6 @@
 #############################################
 # 
-# Simple makefile for hex2bin and asc2hex utilities
+# Simple makefile for hex2asc and asc2hex utilities
 #
 #IDIR =../include
 CC=gcc
@@ -18,14 +18,19 @@ OBJHEX = asc2hex.o
 all: asc2hex hex2asc
 
 asc2hex: $(OBJHEX)
-	gcc -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS)
 
 hex2asc: $(OBJASC)
-	gcc -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
 
-cleanall:
-	rm -f hex2asc asc2hex *.o *~ core  
 clean:
 	rm -f *.o *~ core  
+
+cleanall:
+	rm -f *.o *~ core hex2asc asc2hex
+
+install:
+	install -s hex2asc asc2hex /usr/local/sbin
+
