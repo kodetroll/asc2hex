@@ -1,10 +1,8 @@
   Utilities for converting strings from hex to binary and back.
 
-```
-hex2asc - Converts a string of hex chars of the format '414243' to ASCII 'ABC'
-asc2hex - Converts an ASCII string of the format 'ABC' to hex chars '414243'
-hex2int - Converts a string representing an integer in hex to the decimal value
-```
+* hex2asc - Converts a string of hex chars of the format '414243' to ASCII 'ABC'
+* asc2hex - Converts an ASCII string of the format 'ABC' to hex chars '414243'
+* hex2int - Converts a string representing an integer in hex to the decimal value
 
 Program can accept input either by:
 
