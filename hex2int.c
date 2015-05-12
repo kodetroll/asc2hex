@@ -1,15 +1,16 @@
-// asc2hex - A program that takes a string of the form 'ABCDE' and converts
-// it to the form of '4142434445' (hex)
+// hex2int - A program that takes a string in the form of '4142434445' (hex)
+// and converts it to the binary 32 bit integer represented.
+// 'abcde'.
 //
 // (C) 2015 KB4OID Labs, A division of Kodetroll Heavy Industries
 // Author: Kodetroll
 // Date: January 2015
-// Version: 0.99 (First to receive a version number)
+// Version: 0.99.1 (First to receive a version number)
 //
 // Includes code from strrep.c - C substring replacement by Drew Hess <dhess-src@bothan.net>.
 //
 //	Usage:
-//	'asc2hex' <options> <HEXSTRING>
+//	'%s' <options> <HEXSTRING>
 //
 //	Where:
 //	options:
@@ -19,10 +20,10 @@
 //	    --nohexdump               Turns off Hexdump of output string
 //	    -d, --dump {0:1}          Synonym for Hexdump where 0 is OFF and 1 is ON
 //	    -f, --file <filename>     Load string from file
-//	    -i, --input '<ASCSTRING>' Load string from command line
-//	    <ASCSTRING>               String of Bytes in ASCII format, e.g. '123'.
+//	    -i, --input '<HEXSTRING>' Load string from command line
+//	    <HEXSTRING>               String of Bytes in hex format, e.g. '443266'.
 //
-//	If no ASCII string is provided on the command line, the user is prompted to enter it.
+//	If no hexstring is provided on the command line, the user is prompted to enter it.
 //
 
 #include <stdio.h>
@@ -38,8 +39,6 @@
 #define Minor 99
 #define SubMinor 1
 
-//#define HEXDUMP_LINE_SIZE 16
-
 //=== Global Variables ======================================================================================
 
 /* Flag set by --verbose. */
@@ -50,7 +49,10 @@ char inbuf[120];
 char outbuf[120];
 
 //=== Global Prototypes =====================================================================================
+
 void usage(char * name);
+
+//=== Start of Utility functions ============================================================================
 
 /* Provides usage help for the help command
  *
@@ -78,9 +80,6 @@ int main(int argc, char * argv[])
 	FILE * fp;
 	int i,j,k;
 	char c;
-	char tmp[4];
-
-
 	int cl;
 	int gotin = 0;
 	char buf[120];
@@ -93,21 +92,21 @@ int main(int argc, char * argv[])
 			/* These options set a flag. */
 			{"verbose",   no_argument,   &verbose_flag, 1},
 			{"brief",     no_argument,   &verbose_flag, 0},
-			{"hexdump",   no_argument,   &hexdump_flag, 1},
-			{"nohexdump", no_argument,   &hexdump_flag, 0},
+			{"hexdump",   no_argument,        &hexdump_flag, 1},
+			{"nohexdump", no_argument,        &hexdump_flag, 0},
 			/* These options don’t set a flag.
 				 We distinguish them by their indices. */
-			{"version",   no_argument,       0, 'v'},
-			{"help",      no_argument,       0, 'h'},
-			{"dump",      required_argument, 0, 'd'},
-			{"input",     required_argument, 0, 'i'},
-			{"file",      required_argument, 0, 'f'},
+			{"version", no_argument,       0, 'v'},
+			{"help",    no_argument,       0, 'h'},
+			{"dump",    no_argument,       0, 'd'},
+			{"input",   required_argument, 0, 'i'},
+			{"file",    required_argument, 0, 'f'},
 			{0, 0, 0, 0}
 		};
 		/* getopt_long stores the option index here. */
 		int option_index = 0;
 
-		cl = getopt_long (argc, argv, "vhd:i:f:",
+		cl = getopt_long (argc, argv, "vhdc:d:i:f:",
 				long_options, &option_index);
 
 		/* Detect the end of the options. */
@@ -159,7 +158,6 @@ int main(int argc, char * argv[])
 				else
 				{
 					printf("Error opening file '%s'!\n",optarg);
-					exit(1);
 				}
 				break;
 
@@ -195,27 +193,35 @@ int main(int argc, char * argv[])
 
 		if (mopt == 0)
 		{
-			printf("Enter asc string (e.g. 'ABC' 75 chars max): ");
+			printf("Enter hex string representing an integer (e.g. 'deadbeef'): ");
 			scanf("%78s",inbuf);
 		}
 
 	}
 
-	// Convert string from ASCII characters to Hex ASCII chars
-	j = asc2hex(inbuf,outbuf);
+	// remove whitespace from string
+	memset(buf,0x00,sizeof(buf));
+	strcpy(buf,strrep(inbuf, " ", ""));
+
+	// remove CR/LF from string (file input mostly)
+	memset(inbuf,0x00,sizeof(inbuf));
+	strcpy(inbuf,strrep(buf, "\n", ""));
+
+	// Convert string from Hex ASCII chars to binary 32 bit integer form
+	j = cvt2int(inbuf);
 
 	// if hexdump is selected then the binary is output in
 	// hexdump form, else it is copied to output
-	if (hexdump_flag)
-	{
-		if (verbose_flag)
-			printf("Data(hex) is : \n");
-		HexDataDump(strlen(inbuf)/2,outbuf);
-	}
-	else
-	{
-		printf("%s",outbuf);
-	}
+//	if (hexdump_flag)
+//	{
+//		if (verbose_flag)
+//			printf("Data(hex) is : \n");
+//		HexDataDump(strlen(inbuf)/2,outbuf);
+//	}
+//	else
+//	{
+		printf("0x%08x = %u\n",j,j);
+//	}
 
 	exit(0);
 }
