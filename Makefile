@@ -8,9 +8,9 @@ CC=gcc
 CFLAGS=-I.
 LDFLAGS=-lm
 DEPS = 
-OBJASC = hex2asc.o binaschex.o
-OBJHEX = asc2hex.o binaschex.o
-OBJINT = hex2int.o binaschex.o
+OBJASC = binaschex.o hex2asc.o 
+OBJHEX = binaschex.o asc2hex.o 
+OBJINT = binaschex.o hex2int.o 
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)

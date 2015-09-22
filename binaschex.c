@@ -405,6 +405,10 @@ hex2asc(char * ibuf, char * obuf)
 	{
 		c = hex2int(ibuf[i++]) * 16;
 		c += hex2int(ibuf[i++]);
+		if (print_flag == 1)
+			if ((c < 0x20) || (c > 0x7f))
+				c = 0x2e;
+
 		obuf[j++] = c;
 	} while(i < strlen(ibuf));
 

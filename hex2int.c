@@ -44,6 +44,7 @@
 /* Flag set by --verbose. */
 static int verbose_flag;
 static int hexdump_flag;
+int print_flag;
 
 char inbuf[120];
 char outbuf[120];
@@ -83,6 +84,7 @@ int main(int argc, char * argv[])
 	int cl;
 	int gotin = 0;
 	char buf[120];
+	print_flag = 0;
 
 	while (1)
     {

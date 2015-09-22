@@ -45,6 +45,7 @@
 /* Flag set by --verbose. */
 static int verbose_flag;
 static int hexdump_flag;
+int print_flag;
 
 char inbuf[120];
 char outbuf[120];
@@ -80,10 +81,11 @@ int main(int argc, char * argv[])
 	char c;
 	char tmp[4];
 
-
 	int cl;
 	int gotin = 0;
 	char buf[120];
+
+	print_flag = 0;
 
 	while (1)
     {
@@ -95,6 +97,7 @@ int main(int argc, char * argv[])
 			{"brief",     no_argument,   &verbose_flag, 0},
 			{"hexdump",   no_argument,   &hexdump_flag, 1},
 			{"nohexdump", no_argument,   &hexdump_flag, 0},
+			{"printable", no_argument,     &print_flag, 1},
 			/* These options don’t set a flag.
 				 We distinguish them by their indices. */
 			{"version",   no_argument,       0, 'v'},

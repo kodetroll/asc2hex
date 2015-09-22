@@ -22,6 +22,7 @@
 //	    -f, --file <filename>     Load string from file
 //	    -i, --input '<HEXSTRING>' Load string from command line
 //	    <HEXSTRING>               String of Bytes in hex format, e.g. '443266'.
+//		--printable               Display 'Printable' characters only.
 //
 //	If no hexstring is provided on the command line, the user is prompted to enter it.
 //
@@ -44,6 +45,7 @@
 /* Flag set by --verbose. */
 static int verbose_flag;
 static int hexdump_flag;
+int print_flag;
 
 char inbuf[120];
 char outbuf[120];
@@ -66,6 +68,7 @@ void usage(char * name)
 	printf("    -v, --version             Version information\n");
 	printf("    --hexdump                 Turns on Hexdump of output string\n");
 	printf("    --nohexdump               Turns off Hexdump of output string\n");
+	printf("	--printable               Display 'Printable' characters only.\n");
 	printf("    -d, --dump {0:1}          Synonym for Hexdump where 0 is OFF and 1 is ON\n");
 	printf("    -f, --file <filename>     Load string from file\n");
 	printf("    -i, --input '<HEXSTRING>' Load string from command line\n");
@@ -83,6 +86,7 @@ int main(int argc, char * argv[])
 	int cl;
 	int gotin = 0;
 	char buf[120];
+	print_flag = 0;
 
 	while (1)
     {
@@ -93,6 +97,7 @@ int main(int argc, char * argv[])
 			{"verbose",   no_argument,   &verbose_flag, 1},
 			{"brief",     no_argument,   &verbose_flag, 0},
 			{"hexdump",   no_argument,   &hexdump_flag, 1},
+			{"printable", no_argument,     &print_flag, 1},
 			{"nohexdump", no_argument,   &hexdump_flag, 0},
 			/* These options don’t set a flag.
 				 We distinguish them by their indices. */
