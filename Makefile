@@ -2,6 +2,8 @@
 # 
 # Simple makefile for hex2asc and asc2hex utilities
 #
+INSTALL=install
+WHERE=~/bin
 #IDIR =../include
 CC=gcc
 #CFLAGS=-I$(IDIR)
@@ -35,5 +37,5 @@ cleanall:
 	rm -f *.o *~ core hex2asc asc2hex hex2int
 
 install:
-	install -s hex2asc asc2hex hex2int /usr/local/sbin
+	$(INSTALL) -s hex2asc asc2hex hex2int $(WHERE)
 
