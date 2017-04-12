@@ -31,6 +31,9 @@
 #include <string.h>
 #include <getopt.h>
 #include <assert.h>
+
+#include "hex2int.h"
+
 #include "binaschex.h"
 
 //=== Global Definitions ====================================================================================
@@ -45,9 +48,10 @@
 static int verbose_flag;
 static int hexdump_flag;
 int print_flag;
+int unpar_flag;
 
-char inbuf[120];
-char outbuf[120];
+char inbuf[250];
+char outbuf[250];
 
 //=== Global Prototypes =====================================================================================
 
@@ -67,6 +71,7 @@ void usage(char * name)
 	printf("    -v, --version             Version information\n");
 	printf("    --hexdump                 Turns on Hexdump of output string\n");
 	printf("    --nohexdump               Turns off Hexdump of output string\n");
+	printf("    --unparity                Turns on parity to non-parity conversion (subtracts 0x80)\n");
 	printf("    -d, --dump {0:1}          Synonym for Hexdump where 0 is OFF and 1 is ON\n");
 	printf("    -f, --file <filename>     Load string from file\n");
 	printf("    -i, --input '<HEXSTRING>' Load string from command line\n");
@@ -83,8 +88,10 @@ int main(int argc, char * argv[])
 	char c;
 	int cl;
 	int gotin = 0;
-	char buf[120];
+	char buf[250];
+
 	print_flag = 0;
+	unpar_flag = 0;
 
 	while (1)
     {
@@ -96,6 +103,7 @@ int main(int argc, char * argv[])
 			{"brief",     no_argument,   &verbose_flag, 0},
 			{"hexdump",   no_argument,        &hexdump_flag, 1},
 			{"nohexdump", no_argument,        &hexdump_flag, 0},
+			{"unparity", 	no_argument,     &unpar_flag, 1},
 			/* These options don’t set a flag.
 				 We distinguish them by their indices. */
 			{"version", no_argument,       0, 'v'},

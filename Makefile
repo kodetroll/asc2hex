@@ -10,7 +10,7 @@ CC=gcc
 CFLAGS=-I.
 LDFLAGS=-lm
 DEPS = 
-OBJASC = binaschex.o hex2asc.o 
+OBJASC = hex2asc.o binaschex.o 
 OBJHEX = binaschex.o asc2hex.o 
 OBJINT = binaschex.o hex2int.o 
 
@@ -33,8 +33,8 @@ hex2int: $(OBJINT)
 clean:
 	rm -f *.o *~ core  
 
-cleanall:
-	rm -f *.o *~ core hex2asc asc2hex hex2int
+cleanall: clean
+	rm -f hex2asc asc2hex hex2int
 
 install:
 	$(INSTALL) -s hex2asc asc2hex hex2int $(WHERE)

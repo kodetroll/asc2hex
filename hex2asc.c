@@ -32,6 +32,9 @@
 #include <string.h>
 #include <getopt.h>
 #include <assert.h>
+
+#include "hex2asc.h"
+
 #include "binaschex.h"
 
 //=== Global Definitions ====================================================================================
@@ -46,9 +49,10 @@
 static int verbose_flag;
 static int hexdump_flag;
 int print_flag;
+int unpar_flag;
 
-char inbuf[120];
-char outbuf[120];
+char inbuf[250];
+char outbuf[250];
 
 //=== Global Prototypes =====================================================================================
 
@@ -69,6 +73,7 @@ void usage(char * name)
 	printf("    --hexdump                 Turns on Hexdump of output string\n");
 	printf("    --nohexdump               Turns off Hexdump of output string\n");
 	printf("	--printable               Display 'Printable' characters only.\n");
+	printf("    --unparity                Turns on parity to non-parity conversion (subtracts 0x80)\n");
 	printf("    -d, --dump {0:1}          Synonym for Hexdump where 0 is OFF and 1 is ON\n");
 	printf("    -f, --file <filename>     Load string from file\n");
 	printf("    -i, --input '<HEXSTRING>' Load string from command line\n");
@@ -85,8 +90,9 @@ int main(int argc, char * argv[])
 	char c;
 	int cl;
 	int gotin = 0;
-	char buf[120];
+	char buf[250];
 	print_flag = 0;
+	unpar_flag = 0;
 
 	while (1)
     {
@@ -94,18 +100,19 @@ int main(int argc, char * argv[])
 		static struct option long_options[] =
 		{
 			/* These options set a flag. */
-			{"verbose",   no_argument,   &verbose_flag, 1},
-			{"brief",     no_argument,   &verbose_flag, 0},
-			{"hexdump",   no_argument,   &hexdump_flag, 1},
-			{"printable", no_argument,     &print_flag, 1},
-			{"nohexdump", no_argument,   &hexdump_flag, 0},
+			{"verbose",   	no_argument,   &verbose_flag, 1},
+			{"brief",     	no_argument,   &verbose_flag, 0},
+			{"hexdump",   	no_argument,   &hexdump_flag, 1},
+			{"nohexdump", 	no_argument,   &hexdump_flag, 0},
+			{"printable", 	no_argument,     &print_flag, 1},
+			{"unparity", 	no_argument,     &unpar_flag, 1},
 			/* These options don’t set a flag.
 				 We distinguish them by their indices. */
-			{"version",   no_argument,       0, 'v'},
-			{"help",      no_argument,       0, 'h'},
-			{"dump",      required_argument, 0, 'd'},
-			{"input",     required_argument, 0, 'i'},
-			{"file",      required_argument, 0, 'f'},
+			{"version",   	no_argument,       0, 'v'},
+			{"help",      	no_argument,       0, 'h'},
+			{"dump",      	required_argument, 0, 'd'},
+			{"input",     	required_argument, 0, 'i'},
+			{"file",      	required_argument, 0, 'f'},
 			{0, 0, 0, 0}
 		};
 		/* getopt_long stores the option index here. */

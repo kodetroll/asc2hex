@@ -23,8 +23,8 @@
 
 //=== Global Variables ======================================================================================
 
-char sbuf[120];							// for string processing (rpad, lpad, etc)
-char tmpbuf[120];						// for file & printf operations
+char sbuf[250];							// for string processing (rpad, lpad, etc)
+char tmpbuf[250];						// for file & printf operations
 
 //=== Global Prototypes =====================================================================================
 
@@ -44,7 +44,7 @@ char*
 ucase(const char * s)
 {
     //string n,y;
-    char x[120];
+    char x[250];
     int c,i;
 
     memset(x,0x00,sizeof(x));
@@ -65,7 +65,7 @@ char*
 lcase(const char * s)
 {
     //string n,y;
-    char x[120];
+    char x[250];
     int c,i;
 
     memset(x,0x00,sizeof(x));
@@ -405,6 +405,10 @@ hex2asc(char * ibuf, char * obuf)
 	{
 		c = hex2int(ibuf[i++]) * 16;
 		c += hex2int(ibuf[i++]);
+		if (unpar_flag == 1)
+			if (c > 0x7f)
+				c -= 0x080;
+
 		if (print_flag == 1)
 			if ((c < 0x20) || (c > 0x7f))
 				c = 0x2e;
@@ -425,7 +429,7 @@ hex2asc(char * ibuf, char * obuf)
 int
 asc2hex(char * ibuf, char * obuf)
 {
-	int i,j;
+	int i,j,k;
 	char tmp[4];
 
 	memset(obuf,0x00,sizeof(obuf));
@@ -433,7 +437,11 @@ asc2hex(char * ibuf, char * obuf)
 	j = 0;
 	do
 	{
-		sprintf(tmp,"%02x",ibuf[i++]);
+		k = ibuf[i++];
+		if (unpar_flag == 1)
+			if (k > 0x7F)
+				k -= 0x80;
+		sprintf(tmp,"%02x",k);
 		strncat(obuf,tmp,strlen(tmp));
 	} while (i<strlen(ibuf));
 
