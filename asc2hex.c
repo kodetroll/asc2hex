@@ -37,15 +37,9 @@
 
 //=== Global Definitions ====================================================================================
 
-#define Major 0
-#define Minor 99
-#define SubMinor 1
-
-//#define HEXDUMP_LINE_SIZE 16
-
 //=== Global Variables ======================================================================================
 
-/* Flag set by --verbose. */
+/* Various Flags set by getopt. */
 static int verbose_flag;
 static int hexdump_flag;
 int print_flag;
@@ -55,7 +49,10 @@ char inbuf[250];
 char outbuf[250];
 
 //=== Global Prototypes =====================================================================================
+
 void usage(char * name);
+
+//=== Start of Utility functions ============================================================================
 
 /* Provides usage help for the help command
  *
@@ -69,6 +66,7 @@ void usage(char * name)
 	printf("    -v, --version             Version information\n");
 	printf("    --hexdump                 Turns on Hexdump of output string\n");
 	printf("    --nohexdump               Turns off Hexdump of output string\n");
+	//printf("	--printable               Display 'Printable' characters only.\n");
 	printf("    --unparity                Turns on parity to non-parity conversion (subtracts 0x80)\n");
 	printf("    -d, --dump {0:1}          Synonym for Hexdump where 0 is OFF and 1 is ON\n");
 	printf("    -f, --file <filename>     Load string from file\n");
@@ -82,11 +80,8 @@ void usage(char * name)
 int main(int argc, char * argv[])
 {
 	FILE * fp;
-	int i,j,k;
+	int i,j,k,cl;
 	char c;
-	char tmp[4];
-
-	int cl;
 	int gotin = 0;
 	char buf[250];
 
@@ -210,6 +205,16 @@ int main(int argc, char * argv[])
 		}
 
 	}
+
+	// Start of Program asc2hex
+
+//	// remove any spaces from string
+//	memset(buf,0x00,sizeof(buf));
+//	strcpy(buf,strrep(inbuf, " ", ""));
+//
+//	// remove CR/LF from string (file input mostly)
+//	memset(inbuf,0x00,sizeof(inbuf));
+//	strcpy(inbuf,strrep(buf, "\n", ""));
 
 	// Convert string from ASCII characters to Hex ASCII chars
 	j = asc2hex(inbuf,outbuf);

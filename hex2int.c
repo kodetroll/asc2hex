@@ -38,13 +38,9 @@
 
 //=== Global Definitions ====================================================================================
 
-#define Major 0
-#define Minor 99
-#define SubMinor 1
-
 //=== Global Variables ======================================================================================
 
-/* Flag set by --verbose. */
+/* Various Flags set by getopt. */
 static int verbose_flag;
 static int hexdump_flag;
 int print_flag;
@@ -71,6 +67,7 @@ void usage(char * name)
 	printf("    -v, --version             Version information\n");
 	printf("    --hexdump                 Turns on Hexdump of output string\n");
 	printf("    --nohexdump               Turns off Hexdump of output string\n");
+	//printf("	--printable               Display 'Printable' characters only.\n");
 	printf("    --unparity                Turns on parity to non-parity conversion (subtracts 0x80)\n");
 	printf("    -d, --dump {0:1}          Synonym for Hexdump where 0 is OFF and 1 is ON\n");
 	printf("    -f, --file <filename>     Load string from file\n");
@@ -84,9 +81,8 @@ void usage(char * name)
 int main(int argc, char * argv[])
 {
 	FILE * fp;
-	int i,j,k;
+	int i,j,k,cl;
 	char c;
-	int cl;
 	int gotin = 0;
 	char buf[250];
 
@@ -99,18 +95,19 @@ int main(int argc, char * argv[])
 		static struct option long_options[] =
 		{
 			/* These options set a flag. */
-			{"verbose",   no_argument,   &verbose_flag, 1},
-			{"brief",     no_argument,   &verbose_flag, 0},
-			{"hexdump",   no_argument,        &hexdump_flag, 1},
-			{"nohexdump", no_argument,        &hexdump_flag, 0},
+			{"verbose",   	no_argument,   &verbose_flag, 1},
+			{"brief",     	no_argument,   &verbose_flag, 0},
+			{"hexdump",   	no_argument,   &hexdump_flag, 1},
+			{"nohexdump", 	no_argument,   &hexdump_flag, 0},
+			{"printable", 	no_argument,     &print_flag, 1},
 			{"unparity", 	no_argument,     &unpar_flag, 1},
 			/* These options don’t set a flag.
 				 We distinguish them by their indices. */
-			{"version", no_argument,       0, 'v'},
-			{"help",    no_argument,       0, 'h'},
-			{"dump",    no_argument,       0, 'd'},
-			{"input",   required_argument, 0, 'i'},
-			{"file",    required_argument, 0, 'f'},
+			{"version", 	no_argument,       0, 'v'},
+			{"help",    	no_argument,       0, 'h'},
+			{"dump",    	no_argument,       0, 'd'},
+			{"input",   	required_argument, 0, 'i'},
+			{"file",    	required_argument, 0, 'f'},
 			{0, 0, 0, 0}
 		};
 		/* getopt_long stores the option index here. */
@@ -168,6 +165,7 @@ int main(int argc, char * argv[])
 				else
 				{
 					printf("Error opening file '%s'!\n",optarg);
+					exit(1);
 				}
 				break;
 
@@ -208,6 +206,8 @@ int main(int argc, char * argv[])
 		}
 
 	}
+
+	// Start of Program hex2int
 
 	// remove whitespace from string
 	memset(buf,0x00,sizeof(buf));

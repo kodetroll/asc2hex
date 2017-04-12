@@ -21,10 +21,9 @@
 
 //=== Global Definitions ====================================================================================
 
-//#define Major 0
-//#define Minor 99
-#define BINASCHEX_LIB_VER 20150407
-#define HEXDUMP_LINE_SIZE 16
+#define Major 0
+#define Minor 99
+#define SubMinor 1
 
 //=== Global Variables ======================================================================================
 

@@ -39,13 +39,9 @@
 
 //=== Global Definitions ====================================================================================
 
-#define Major 0
-#define Minor 99
-#define SubMinor 1
-
 //=== Global Variables ======================================================================================
 
-/* Flag set by --verbose. */
+/* Various Flags set by getopt. */
 static int verbose_flag;
 static int hexdump_flag;
 int print_flag;
@@ -86,11 +82,11 @@ void usage(char * name)
 int main(int argc, char * argv[])
 {
 	FILE * fp;
-	int i,j,k;
+	int i,j,k,cl;
 	char c;
-	int cl;
 	int gotin = 0;
 	char buf[250];
+
 	print_flag = 0;
 	unpar_flag = 0;
 
@@ -211,6 +207,8 @@ int main(int argc, char * argv[])
 		}
 
 	}
+
+	// Start of Program hex2asc
 
 	// remove any spaces from string
 	memset(buf,0x00,sizeof(buf));
