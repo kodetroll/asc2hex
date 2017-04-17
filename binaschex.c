@@ -394,8 +394,8 @@ hex2int(char c)
 int
 hex2asc(char * ibuf, char * obuf)
 {
-	int i,j;
-	char c;
+	int i,j,c;
+	//char c;
 
 	// Convert string from Hex ASCII chars to binary form
 	memset(obuf,0x00,sizeof(obuf));
@@ -407,13 +407,13 @@ hex2asc(char * ibuf, char * obuf)
 		c += hex2int(ibuf[i++]);
 		if (unpar_flag == 1)
 			if (c > 0x7f)
-				c -= 0x080;
+				c -= 0x80;
 
 		if (print_flag == 1)
 			if ((c < 0x20) || (c > 0x7f))
 				c = 0x2e;
 
-		obuf[j++] = c;
+		obuf[j++] = (char)c;
 	} while(i < strlen(ibuf));
 
 	return(j);

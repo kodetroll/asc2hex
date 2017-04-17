@@ -47,8 +47,8 @@ static int hexdump_flag;
 int print_flag;
 int unpar_flag;
 
-char inbuf[250];
-char outbuf[250];
+char inbuf[5000];
+char outbuf[5000];
 
 //=== Global Prototypes =====================================================================================
 
@@ -68,7 +68,7 @@ void usage(char * name)
 	printf("    -v, --version             Version information\n");
 	printf("    --hexdump                 Turns on Hexdump of output string\n");
 	printf("    --nohexdump               Turns off Hexdump of output string\n");
-	printf("	--printable               Display 'Printable' characters only.\n");
+	printf("    --printable               Display 'Printable' characters only.\n");
 	printf("    --unparity                Turns on parity to non-parity conversion (subtracts 0x80)\n");
 	printf("    -d, --dump {0:1}          Synonym for Hexdump where 0 is OFF and 1 is ON\n");
 	printf("    -f, --file <filename>     Load string from file\n");
@@ -82,10 +82,10 @@ void usage(char * name)
 int main(int argc, char * argv[])
 {
 	FILE * fp;
-	int i,j,k,cl;
+	int i,j,k,cl,inlen;
 	char c;
 	int gotin = 0;
-	char buf[250];
+	char buf[5000];
 
 	print_flag = 0;
 	unpar_flag = 0;
@@ -152,16 +152,22 @@ int main(int argc, char * argv[])
 				break;
 
 			case 'f':
-				printf ("Loading input from file: `%s'\n", optarg);
+				if (verbose_flag)
+					printf ("Loading input from file: `%s'\n", optarg);
 				fp = fopen (optarg,"r");
 				if (fp != NULL)
 				{
+					inlen = 0;
 					while( ( c = fgetc(fp) ) != EOF ) {
-						sprintf(buf,"%c",c);
-						strcat(inbuf,buf);
+						//if (c != ' ' && c != '\n') {
+							sprintf(buf,"%c",c);
+							strncat(inbuf,buf,1);
+							inlen++;
+						//}
 					}
     				fclose (fp);
 					gotin = 1;
+
 				}
 				else
 				{
@@ -217,6 +223,9 @@ int main(int argc, char * argv[])
 	// remove CR/LF from string (file input mostly)
 	memset(inbuf,0x00,sizeof(inbuf));
 	strcpy(inbuf,strrep(buf, "\n", ""));
+
+	//printf("inlen: %d\n",inlen);
+	//printf("inbuf: '%s'\n",inbuf);
 
 	// Convert string from Hex ASCII chars to binary form
 	j = hex2asc(inbuf, outbuf);
